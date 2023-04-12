@@ -70,6 +70,9 @@ varmik = csd_reader.molecule('VARMIK')
 # Setting up and running a substructure search
 substructure_search = ccdc.search.SubstructureSearch()
 sub_id = substructure_search.add_substructure(connser_substructure)
+
+
+
 hits = substructure_search.search(max_hits_per_structure=1)
 print(len(hits))  
 for hit in hits:
