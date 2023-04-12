@@ -52,17 +52,41 @@ substructure_search.add_torsion_angle_measurement('TOR1',
     sub_id, 2,
     sub_id, 3,
     sub_id, 4)
-hits = substructure_search.search()
-for h in hits:
-    print('%8s %7.2f' % (h.identifier, h.measurements['TOR1']))
-
-print('torsion C atoms:')
-substructure_search.add_torsion_angle_measurement('TOR1',
+substructure_search.add_torsion_angle_measurement('TOR2',
     sub_id, 6,
     sub_id, 7,
     sub_id, 8,
     sub_id, 9)
 hits = substructure_search.search()
 for h in hits:
-    print('%8s %7.2f' % (h.identifier, h.measurements['TOR1']))
+        print('%8s %7.2f' % (h.identifier, h.measurements['TOR1']))
+
+def write_torsion(hits):
+    identifier, measurement_O, measurement_C = [], [], []
+    for h in hits:
+        identifier.append(h.identifier)
+        measurement_O.append(h.measurements['TOR1'])
+        measurement_C.append(h.measurements['TOR2'])
+    df = pd.DataFrame({'identifier' : identifier,
+                       'torsion_angle_O' : measurement_O,
+                       'torsion_angle_C' : measurement_C})
+    return df
+
+df = write_torsion(hits)
+df.to_excel('result_script.xlsx')
+
+
+print('torsion C atoms:')
+# substructure_search.add_torsion_angle_measurement('TOR2',
+#     sub_id, 6,
+#     sub_id, 7,
+#     sub_id, 8,
+#     sub_id, 9)
+# hits = substructure_search.search()
+
+
+for h in hits:
+    print('%8s %7.2f' % (h.identifier, h.measurements['TOR2']))
+
+
 
