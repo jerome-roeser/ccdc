@@ -1,9 +1,17 @@
-import ccdc
-from ccdc.search import QueryAtom
-from ccdc.search import QueryBond
-from ccdc.search import QuerySubstructure
+from ccdc.io import EntryReader
+from ccdc.search import QueryAtom, QueryBond
+from ccdc.search import QuerySubstructure, ConnserSubstructure
 from ccdc.search import SubstructureSearch
+
 import pandas as pd
+
+INFILE = r'C:\Users\csd\csds_data\scripts\penta-Si.cgd'
+OUTPUT_FILENAME = 'results_SiO4C'
+
+csd_reader = EntryReader('CSD')
+# cgd_reader = EntryReader('penta-Si_short.gcd', format='identifiers')
+# print(f'CSD database: {len(csd_reader)} entries')
+# print(f'CGD file: {len(cgd_reader)} entries')
 
 
 # substructure query for SiO4C
@@ -37,16 +45,15 @@ _ = p.add_bond(QueryBond('Single'), o4, c4)
 # A substructure can also be read in from a ConQuest Connser file.
 # filepath = 'monochloropyridine.con'
 filepath = 'pentaSi.con'
-connser_substructure = ccdc.search.ConnserSubstructure(filepath)
+connser_substructure = ConnserSubstructure(filepath)
 
 for qatom in p.atoms:  
     print('%d: %s' % (qatom.index, qatom))
 
-
-substructure_search = ccdc.search.SubstructureSearch()
+# create search object
+substructure_search = SubstructureSearch()
 sub_id = substructure_search.add_substructure(p)
 
-print('torsion O atoms:')
 substructure_search.add_torsion_angle_measurement('TOR1',
     sub_id, 1,
     sub_id, 2,
@@ -57,7 +64,14 @@ substructure_search.add_torsion_angle_measurement('TOR2',
     sub_id, 7,
     sub_id, 8,
     sub_id, 9)
-hits = substructure_search.search()
+hits = substructure_search.search(csd_reader)
+
+print('torsion O atoms:')
+
+with open(f'{OUTPUT_FILENAME}.gcd', 'w') as f:
+     for h in hits:
+          f.writelines(f'{h.identifier}\n')
+     
 for h in hits:
         print('%8s %7.2f' % (h.identifier, h.measurements['TOR1']))
 
@@ -73,20 +87,20 @@ def write_torsion(hits):
     return df
 
 df = write_torsion(hits)
-df.to_excel('result_script.xlsx')
+df.to_excel(f'{OUTPUT_FILENAME}.xlsx')
 
 
 print('torsion C atoms:')
-# substructure_search.add_torsion_angle_measurement('TOR2',
-#     sub_id, 6,
-#     sub_id, 7,
-#     sub_id, 8,
-#     sub_id, 9)
-# hits = substructure_search.search()
-
-
 for h in hits:
     print('%8s %7.2f' % (h.identifier, h.measurements['TOR2']))
+
+hits_csd = substructure_search.search(csd_reader)
+print(f'search whole CSD yields {len(hits_csd)} hits')
+# hits_cgd = substructure_search.search(cgd_reader)
+# print(f'search .cgd file yields {len(hits_cgd)} hits')
+
+
+
 
 
 
