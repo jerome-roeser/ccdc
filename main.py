@@ -30,7 +30,7 @@ def plot_torsion_histogramm_B(file):
 # plt.show()
 
 plot_torsion_histogramm_Si(sio4c)
-plot_torsion_histogramm_B(bo4)
+# plot_torsion_histogramm_B(bo4)
 
 
 # with open('penta-Si.gcd', 'r') as f:
