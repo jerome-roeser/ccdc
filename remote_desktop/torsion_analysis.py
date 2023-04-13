@@ -77,13 +77,36 @@ for h in hits:
 
 def write_torsion(hits):
     identifier, measurement_O, measurement_C = [], [], []
+    a, b, c = [], [], []
+    alpha, beta, gamma = [], [], []
+    crystal_system, spacegroup = [], []
+    cell_volume = []
     for h in hits:
         identifier.append(h.identifier)
         measurement_O.append(h.measurements['TOR1'])
         measurement_C.append(h.measurements['TOR2'])
+        a.append(h.crystal.cell_lengths.a)
+        b.append(h.crystal.cell_lengths.b)
+        c.append(h.crystal.cell_lengths.c)
+        alpha.append(h.crystal.cell_angles.alpha)
+        beta.append(h.crystal.cell_angles.beta)
+        gamma.append(h.crystal.cell_angles.gamma)
+        crystal_system.append(h.crystal.crystal_system)
+        spacegroup.append(h.crystal.spacegroup_symbol)
+        cell_volume.append(h.crystal.cell_volume)
     df = pd.DataFrame({'identifier' : identifier,
                        'torsion_angle_O' : measurement_O,
-                       'torsion_angle_C' : measurement_C})
+                       'torsion_angle_C' : measurement_C,
+                       'a':a,
+                       'b':b,
+                       'c':c,
+                       'alpha':alpha,
+                       'beta':beta,
+                       'gamma':gamma,
+                       'crystal_system':crystal_system,
+                       'spacegroup':spacegroup,
+                       'cell_volume':cell_volume
+                       })
     return df
 
 df = write_torsion(hits)
