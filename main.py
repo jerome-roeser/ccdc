@@ -46,7 +46,6 @@ _ = p.add_bond(QueryBond('Single'), o3, c3)
 _ = p.add_bond(QueryBond('Single'), o4, c4)
 
 # A substructure can also be read in from a ConQuest Connser file.
-# filepath = 'monochloropyridine.con'
 filepath = 'pentaSi.con'
 connser_substructure = ConnserSubstructure(filepath)
 
