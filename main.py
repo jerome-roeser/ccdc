@@ -14,7 +14,7 @@ def plot_torsion_histogramm_Si(file):
     df['abs_torsion_angle_O'] = df.torsion_angle_O.apply(lambda x: abs(x)-180 if abs(x) > 90 else abs(x))
     df['abs_torsion_angle_C'] = df.torsion_angle_C.apply(lambda x: abs(x)-180 if abs(x) > 90 else abs(x))
 
-    sns.histplot(data=df, x = df.abs_torsion_angle_O, bins= 24)
+    # sns.histplot(data=df, x = df.abs_torsion_angle_O, bins= 24)
     ax = sns.histplot(data=df, x = df.abs_torsion_angle_C, bins= 24)
     ax.set_xlim(-90, 90)
 
@@ -31,7 +31,7 @@ def plot_torsion_histogramm_B(file):
 
 # plt.show()
 
-# plot_torsion_histogramm_Si(sio4c)
+plot_torsion_histogramm_Si(sio4c)
 plot_torsion_histogramm_B(bo4)
 
 

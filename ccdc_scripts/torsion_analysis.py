@@ -52,7 +52,7 @@ for qatom in p.atoms:
 
 # create search object
 substructure_search = SubstructureSearch()
-sub_id = substructure_search.add_substructure(p)
+sub_id = substructure_search.add_substructure(connser_substructure)
 
 substructure_search.add_torsion_angle_measurement('TOR1',
     sub_id, 1,
